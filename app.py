@@ -1,61 +1,142 @@
-import flask
-from flask import request, jsonify
-
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
-
-# Create some test data for our catalog in the form of a list of dictionaries.
-books = [
-    {'id': 0,
-     'title': 'A Fire Upon the Deep',
-     'author': 'Vernor Vinge',
-     'first_sentence': 'The coldsleep itself was dreamless.',
-     'year_published': '1992'},
-    {'id': 1,
-     'title': 'The Ones Who Walk Away From Omelas',
-     'author': 'Ursula K. Le Guin',
-     'first_sentence': 'With a clamor of bells that set the swallows soaring, the Festival of Summer came to the city Omelas, bright-towered by the sea.',
-     'published': '1973'},
-    {'id': 2,
-     'title': 'Dhalgren',
-     'author': 'Samuel R. Delany',
-     'first_sentence': 'to wound the autumnal city.',
-     'published': '1975'}
-]
+import datetime as dt
+import numpy as np
+import pandas as pd
+import datetime as dt
+import sqlalchemy
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
+from flask import Flask, jsonify
 
 
-@app.route('/', methods=['GET'])
-def home():
-    return '''<h1>Distant Reading Archive</h1>
-<p>A prototype API for distant reading of science fiction novels.</p>'''
+#################################################
+# Database Setup
+#################################################
+engine = create_engine("sqlite:///Hawaii.sqlite") #change the name of the database
+# reflect the database into a new model
+Base = automap_base()
+# reflect the tables
+Base.prepare(engine, reflect=True)
 
+# Save reference to the table
+#Station = Base.classes.station
+#Measurements = Base.classes.measurements
 
-@app.route('/api/v1/resources/books/all', methods=['GET'])
-def api_all():
-    return jsonify(books)
+# Create our session (link) from Python to the DB
+session = Session(engine)
 
+#################################################
+# Flask Setup
+#################################################
+app = Flask(__name__)
 
-@app.route('/api/v1/resources/books', methods=['GET'])
-def api_id():
-    # Check if an ID was provided as part of the URL.
-    # If ID is provided, assign it to a variable.
-    # If no ID is provided, display an error in the browser.
-    if 'id' in request.args:
-        id = int(request.args['id'])
-    else:
-        return "Error: No id field provided. Please specify an id."
+#################################################
+# Flask Routes
+#################################################
+@app.route("/")
+#def welcome():
+    #"""List all available api routes."""
+    #return (
+       # f"Available Routes:<br/>"
+        #f"<br/>"
+        #f"/api/v1.0/precipitation<br/>"
+        #f"- List of prior year rain totals from all stations<br/>"
+        #f"<br/>"
+        #f"/api/v1.0/stations<br/>"
+        #f"- List of Station numbers and names<br/>"
+        #f"<br/>"
+        #f"/api/v1.0/tobs<br/>"
+        #f"- List of prior year temperatures from all stations<br/>"
+        #f"<br/>"
+        #f"/api/v1.0/start<br/>"
+        #f"- When given the start date (YYYY-MM-DD), calculates the MIN/AVG/MAX temperature for all dates greater than and equal to the start date<br/>"
+        #f"<br/>"
+        #f"/api/v1.0/start/end<br/>"
+        #f"- When given the start and the end date (YYYY-MM-DD), calculate the MIN/AVG/MAX temperature for dates between the start and end date inclusive<br/>"
 
-    # Create an empty list for our results
-    results = []
+    )
+#########################################################################################
 
-    # Loop through the data and match results that fit the requested ID.
-    # IDs are unique, but other fields might return many results
-    for book in books:
-        if book['id'] == id:
-            results.append(book)
+#@app.route("/api/v1.0/precipitation")
+#def precipitation():
+    #"""Return a list of rain fall for prior year"""
+#    * Query for the dates and precipitation observations from the last year.
+#           * Convert the query results to a Dictionary using `date` as the key and `prcp` as the value.
+#           * Return the json representation of your dictionary.
+   # last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
+    #last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    #rain = session.query(Measurements.date, Measurements.prcp).\
+        #filter(Measurements.date > last_year).\
+        #order_by(Measurements.date).all()
 
-    # Use the jsonify function from Flask to convert our list of
-    # Python dictionaries to the JSON format.
-    return jsonify(results)
+# Create a list of dicts with `date` and `prcp` as the keys and values
+    #rain_totals = []
+    #for result in rain:
+        #row = {}
+        #row["date"] = rain[0]
+        #row["prcp"] = rain[1]
+        #rain_totals.append(row)
 
-app.run()
+    #return jsonify(rain_totals)
+
+#########################################################################################
+#  @app.route("/api/v1.0/stations")
+# def stations():
+#     stations_query = session.query(Station.name, Station.station)
+#     stations = pd.read_sql(stations_query.statement, stations_query.session.bind)
+#     return jsonify(stations.to_dict())
+# #########################################################################################
+# @app.route("/api/v1.0/tobs")
+# def tobs():
+#     """Return a list of temperatures for prior year"""
+# #    * Query for the dates and temperature observations from the last year.
+# #           * Convert the query results to a Dictionary using `date` as the key and `tobs` as the value.
+# #           * Return the json representation of your dictionary.
+#     last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
+#     last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+#     temperature = session.query(Measurements.date, Measurements.tobs).\
+#         filter(Measurements.date > last_year).\
+#         order_by(Measurements.date).all()
+
+# # Create a list of dicts with `date` and `tobs` as the keys and values
+#     temperature_totals = []
+#     for result in temperature:
+#         row = {}
+#         row["date"] = temperature[0]
+#         row["tobs"] = temperature[1]
+#         temperature_totals.append(row)
+
+#     return jsonify(temperature_totals)
+# #########################################################################################
+# @app.route("/api/v1.0/<start>")
+# def trip1(start):
+
+#  # go back one year from start date and go to end of data for Min/Avg/Max temp   
+#     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
+#     last_year = dt.timedelta(days=365)
+#     start = start_date-last_year
+#     end =  dt.date(2017, 8, 23)
+#     trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
+#         filter(Measurements.date >= start).filter(Measurements.date <= end).all()
+#     trip = list(np.ravel(trip_data))
+#     return jsonify(trip)
+
+# #########################################################################################
+# @app.route("/api/v1.0/<start>/<end>")
+# def trip2(start,end):
+
+#   # go back one year from start/end date and get Min/Avg/Max temp     
+#     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
+#     end_date= dt.datetime.strptime(end,'%Y-%m-%d')
+#     last_year = dt.timedelta(days=365)
+#     start = start_date-last_year
+#     end = end_date-last_year
+#     trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
+#         filter(Measurements.date >= start).filter(Measurements.date <= end).all()
+#     trip = list(np.ravel(trip_data))
+#     return jsonify(trip) 
+
+#########################################################################################
+
+if __name__ == "__main__":
+    app.run(debug=True)
