@@ -1,142 +1,104 @@
-import datetime as dt
-import numpy as np
+
 import pandas as pd
-import datetime as dt
-import sqlalchemy
+import numpy as np
+import json
+
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
-from flask import Flask, jsonify
+from sqlalchemy import create_engine
+from scipy import stats
+
+from flask import Flask, jsonify, render_template
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
 
 
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///Hawaii.sqlite") #change the name of the database
-# reflect the database into a new model
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///netflix_db.sqlite"
+db = SQLAlchemy(app)
+
+# reflect an existing database into a new model
 Base = automap_base()
 # reflect the tables
-Base.prepare(engine, reflect=True)
+Base.prepare(db.engine, reflect=True)
 
-# Save reference to the table
-#Station = Base.classes.station
-#Measurements = Base.classes.measurements
+# Save references to each table
+High_Stock_data = Base.classes.High
+Low_Stock_data = Base.classes.Low
+Stock_dates = Base.classes.Date
 
-# Create our session (link) from Python to the DB
-session = Session(engine)
 
-#################################################
-# Flask Setup
-#################################################
-app = Flask(__name__)
-
-#################################################
-# Flask Routes
-#################################################
 @app.route("/")
-#def welcome():
-    #"""List all available api routes."""
-    #return (
-       # f"Available Routes:<br/>"
-        #f"<br/>"
-        #f"/api/v1.0/precipitation<br/>"
-        #f"- List of prior year rain totals from all stations<br/>"
-        #f"<br/>"
-        #f"/api/v1.0/stations<br/>"
-        #f"- List of Station numbers and names<br/>"
-        #f"<br/>"
-        #f"/api/v1.0/tobs<br/>"
-        #f"- List of prior year temperatures from all stations<br/>"
-        #f"<br/>"
-        #f"/api/v1.0/start<br/>"
-        #f"- When given the start date (YYYY-MM-DD), calculates the MIN/AVG/MAX temperature for all dates greater than and equal to the start date<br/>"
-        #f"<br/>"
-        #f"/api/v1.0/start/end<br/>"
-        #f"- When given the start and the end date (YYYY-MM-DD), calculate the MIN/AVG/MAX temperature for dates between the start and end date inclusive<br/>"
+def index():
+    """Return the homepage."""
+    return render_template("index.html")
 
-    )
-#########################################################################################
+# runs the flask app to get the data for the bubble  
 
-#@app.route("/api/v1.0/precipitation")
-#def precipitation():
-    #"""Return a list of rain fall for prior year"""
-#    * Query for the dates and precipitation observations from the last year.
-#           * Convert the query results to a Dictionary using `date` as the key and `prcp` as the value.
-#           * Return the json representation of your dictionary.
-   # last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
-    #last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
-    #rain = session.query(Measurements.date, Measurements.prcp).\
-        #filter(Measurements.date > last_year).\
-        #order_by(Measurements.date).all()
+@app.route("/linechart")
+def linechart(year, x , y):
+    """Returns the data needed for the linechart."""
+    print('This is the data for the stock information')
+    # Use Pandas to perform the sql query
+    results = pd.read_sql(f"SELECT column1, column2, column3, {x}, {y} FROM netflix WHERE year = '{year}' AND {x} IS NOT NULL and {y} IS NOT NULL", db.session.bind)
 
-# Create a list of dicts with `date` and `prcp` as the keys and values
-    #rain_totals = []
-    #for result in rain:
-        #row = {}
-        #row["date"] = rain[0]
-        #row["prcp"] = rain[1]
-        #rain_totals.append(row)
+    # print(results)
+    # Return a list of the column names (sample names)
+    results = results.to_json(orient='records')
+    jsonresults = json.loads(results)
+    return jsonify(jsonresults)
 
-    #return jsonify(rain_totals)
 
-#########################################################################################
-#  @app.route("/api/v1.0/stations")
-# def stations():
-#     stations_query = session.query(Station.name, Station.station)
-#     stations = pd.read_sql(stations_query.statement, stations_query.session.bind)
-#     return jsonify(stations.to_dict())
-# #########################################################################################
-# @app.route("/api/v1.0/tobs")
-# def tobs():
-#     """Return a list of temperatures for prior year"""
-# #    * Query for the dates and temperature observations from the last year.
-# #           * Convert the query results to a Dictionary using `date` as the key and `tobs` as the value.
-# #           * Return the json representation of your dictionary.
-#     last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
-#     last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
-#     temperature = session.query(Measurements.date, Measurements.tobs).\
-#         filter(Measurements.date > last_year).\
-#         order_by(Measurements.date).all()
+@app.route("/<county>")
+def county2(county):
+    """Return a list of sample names."""
+    # Use Pandas to perform the sql querylscc
+    results = pd.read_sql(f"select country from netflix where year = '{year} and country = '{county}'", db.session.bind)
+    # print(results)
+    # Return a list of the column names (sample names)
+    json1 = results.to_json(orient='records')
+    jsonfiles = json.loads(json1)
+    return jsonify(jsonfiles)
 
-# # Create a list of dicts with `date` and `tobs` as the keys and values
-#     temperature_totals = []
-#     for result in temperature:
-#         row = {}
-#         row["date"] = temperature[0]
-#         row["tobs"] = temperature[1]
-#         temperature_totals.append(row)
 
-#     return jsonify(temperature_totals)
-# #########################################################################################
-# @app.route("/api/v1.0/<start>")
-# def trip1(start):
+    
+@app.route("/timeseries/<county>")
+def county3(county):
+    """Return a list of sample names."""
+    # Use Pandas to perform the sql querylscc
+    results = pd.read_sql(f"select * from netflix where country = '{county}' order by date", db.session.bind)
+    # print(results)
+    # Return a list of the column names (sample names)
+    json1 = results.to_json(orient='records')
+    jsonfiles = json.loads(json1)
+    return jsonify(jsonfiles)
 
-#  # go back one year from start date and go to end of data for Min/Avg/Max temp   
-#     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
-#     last_year = dt.timedelta(days=365)
-#     start = start_date-last_year
-#     end =  dt.date(2017, 8, 23)
-#     trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
-#         filter(Measurements.date >= start).filter(Measurements.date <= end).all()
-#     trip = list(np.ravel(trip_data))
-#     return jsonify(trip)
 
-# #########################################################################################
-# @app.route("/api/v1.0/<start>/<end>")
-# def trip2(start,end):
 
-#   # go back one year from start/end date and get Min/Avg/Max temp     
-#     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
-#     end_date= dt.datetime.strptime(end,'%Y-%m-%d')
-#     last_year = dt.timedelta(days=365)
-#     start = start_date-last_year
-#     end = end_date-last_year
-#     trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
-#         filter(Measurements.date >= start).filter(Measurements.date <= end).all()
-#     trip = list(np.ravel(trip_data))
-#     return jsonify(trip) 
+    # print(results)
+    # Return a list of the column names (sample names)
+    json1 = results.to_json(orient='records')
+    jsonfiles = json.loads(json1)
+    return jsonify(jsonfiles)
 
-#########################################################################################
+@app.route("/map/<variable>/<year>")
+def map_route(variable, year):
+    """Return a list of sample names."""
+    # Use Pandas to perform the sql query
+    results = pd.read_sql(f"select year, county from netflix where year = {year}", db.session.bind)
+    if results[f'{variable}'].dtypes == 'int64':
+        results[f'{variable}'] = results[f'{variable}'].astype(float)
+    results = results.set_index("country")
+    json1 = results.to_json(orient='index')
+    min1 = results[f'{variable}'].min()
+    max1 = results[f'{variable}'].max()
+    jsonfiles = json.loads(json1)
+    jsonfiles['min_max'] = {'min' : min1, "max" : max1}
+    return jsonfiles
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
