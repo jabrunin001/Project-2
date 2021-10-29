@@ -8,7 +8,7 @@
   <title>Netflix History</title>
    <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"> -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
   crossorigin=""/>
@@ -18,8 +18,276 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand"><font color="white"><b>U</b></font></a>
+      <a class="navbar-brand"><font color="white"><b>Netflix: A Story of the Revolutionary Company</b></font></a>
       <a class="navbar-sub"><font color="rgba(245, 245, 245, 0.849)">The Netlfix Rise to power and the use or International Markets</font></a>
     </div>
   </div>
 </nav>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <!-- select a year -->
+  <div class="panel-heading"><strong>Select Year</strong>
+    <div class="panel-sub-heading">Select Year</div>
+  </div>
+  <div class="panel-body">
+    <select id="xAxisSelection" onchange="newYearBubble(this.value)">
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+      <option value="2019">2019</option>
+      <option value="2018">2018</option>
+      <option value="2017">2017</option>
+      <option value="2016">2016</option>
+      <option value="2015">2015</option>
+      <option value="2014">2014</option>
+      <option value="2013">2013</option>
+      <option value="2012">2012</option>
+      <option value="2011">2011</option>
+      <option value="2010">2010</option>
+      <option value="2009">2009</option>
+      <option value="2008">2008</option>
+      <option value="2007">2007</option>
+      <option value="2006">2006</option>
+      <option value="2005">2005</option>
+      <option value="2004">2004</option>
+      <option value="2003">2003</option>
+      <option value="2002">2002</option>
+
+    </select> 
+  </div>
+  <br>
+  <!-- select a primary variable -->
+  <div class="panel-heading"><strong>Key Dates</strong>
+  </div>
+  <div class="panel-body">
+    <select id="yAxisSelection" onchange="newYBubble(this.value); NewVar1(this.value);">
+      <option value="">Date #1</option>
+      <option value="">Date #2</option>
+      <option value="">Date #3</option>
+      <option value="">Date #4</option>
+      <option value="">Date #5</option>
+      <option value="" selected>Date #6</option>
+      <option value="">Date #7</option>  
+      <option value="">Date #8</option>
+      <option value="">Date #9</option>
+      <option value="">Date #10</option>   
+    </select> 
+  </div>
+  <br>
+  <!-- select a second variable -->
+  <div class="panel-heading"><strong>Region</strong>
+  </div>
+  <div class="panel-body">
+    <select id="xAxisSelection" onchange="newXBubble(this.value); NewVar2(this.value);">
+      <option value="">All Regions</option>
+      <option value="">USA & Canada</option>
+      <option value="">EMEA (Europe, Middle East, Africa)</option>
+      <option value="">Latin America</option>
+      <option value="">Asia-Pacific</option>
+    </select> 
+  </div>
+  <br>
+    <!-- select a third variable -->
+  <div class="panel-heading"><strong>Rating</strong>
+  </div>
+  <div class="panel-body">
+    <select id="zAxisSelection" onchange="NewVar3(this.value);">
+      <option value="">G</option>
+      <option value="">PG</option>
+      <option value="">PG-13</option>
+      <option value="">R</option>
+      <option value="">NC-17</option>
+      <option value="">TV-G</option>
+      <option value="">TV-PG</option>  
+      <option value="">TV-14</option>
+      <option value="">TV-MA</option>
+      <option value="">NR</option> 
+    </select> 
+  </div>
+</div>
+
+    <br>
+    <br>
+    <div id="main">
+      <button class="openbtn" onclick="openNav()">&#9776; Filters</button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+
+    <div class="row-fluid justify-content-center">
+      <div class="col-lg-4">
+        <h4><u>Brief History</u></h4>
+        <p>Netflix was founded in 1997 in Scotts Valley, California. It started as innovate approach to DVD distribution through mail, competing with entertainment giants such as Blockbuster. They are now the largest streaming service with over 200 million subscribers in 190 countries around the world. Their collaboration and growth with international content may be the reason why the giant stays on the rise. </p>   
+        </div>
+        <div class="col-lg-4">
+          <div class="spacing">
+          <br>
+          <br>
+        </div>
+          <p>This app had the intention of looking at the history of Netlflix (and hopefully the future) to see how it has changed over the years. Looking at key dates in it's history and how they were catalysts for the growth of the company. How the expansion into foreign countries and new original content has spured a new creative enterprise. Finally how the growth of adult centered content and the lack of cable monitoring has allowed more age specific content for everyone to enjoy.</p>
+          <p>Project Number 2, credits and high fives to Tim Brackett, Daniel Chia, and Jim Bruning </p>
+        </div>
+
+    <div class="row-fluid justify-content-center">
+      <div class="col-lg-12">
+    <h4><b>Click on any country on the map to get started, or start with USA by default.</b></h4>  
+      </div>
+    </div>
+
+
+    <div class="row-fluid justify-content-center">
+      <div id="leafletmap" class="col-lg-8 col-md-9">
+        <div id='map'></div>
+      </div>
+      <div class="col-lg-4">
+       <div id="summary-card"></div>
+        
+      </div>
+    </div>
+
+    
+
+
+      <!-- <div class="row justify-content-center">
+          <div align="center"> -->
+
+
+        <div class="col-lg-8">
+          <br>
+          <br>
+          <p>The bubble plot and map show how the content of Netflix has changed over the years and grown into an internatiional product, and how they trend over time. Select a year of interest or click on the Play button to see how the pattern changes over time. 
+            Mouse-over individual bubbles to see the county name, state, and selected variables. 
+            To find out more about a bubble click on it to show the country and the growth. The map will also update to show where the country is.
+            </p>
+          <br>
+        </div>
+
+       
+        
+        
+        <div class="col-lg-4">
+        </div>   
+
+      <div class="row-fluid justify-content-center">
+        <div class="col-lg-12">
+        </div>
+        <br>
+      </div>
+      </div>
+      
+      
+
+
+
+
+<div class="container-fluid">
+  <div class="row-fluid">
+
+  <!-- start of select year, x and y axis html -->
+  <div class="col-md-2">
+    <aside class="filters">
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong>Play Over Time</strong></div>
+        <div class="panel-body">
+          <button id="timeAll-btn" type="button" class="btn btn-warning" style="background-color:black; color:white; border:transparent"onclick="bubbleOverTime()">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"> </span> Play
+          </button>
+        </div>
+      </div>
+    </aside>
+
+      <!-- State select options -->
+    <aside class="filters">
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong>Country Filters</strong></div>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <ul class="list-group" id="filters">
+                <li class="filter list-group-item">
+                  <label for="state">Type in a Country</label>
+                  <input class="form-control" id="stateSelector" type="text" placeholder="USA">
+                </li>
+              </ul>
+            </div>
+            <hr>
+            <button id="countryAll-btn" type="button" class="btn btn-primary"  style="background-color:black; color:white; border:transparent" onclick="countryAll()">Show World </button>
+          </form>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
+
+
+  <!-- Inserts the bubble chart-->
+  <div class="col-md-7">
+    <div id="bubble"></div>
+  </div>
+  
+  <div class="col-md-3">
+    <br>
+    <h4><u>Bubble Plot</u></h4>
+    <p><i>How to use:</i>
+      Use the Country Filters, type in a country name, hit Enter. Click on the <b>Show World</b> button to reset to default view.
+      </p>
+    <p> </p>
+    <p> </p>
+    <p><i>Explanation</i>:
+      The bubble plot is used to show the amount of TV and Movies are created in each specific country. You can use the year filter to see how the content has changed over the years.
+      </p>
+      <br>
+      <br>
+   </div>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div class="container-fluid">
+<div class="row-fluid">
+  <!-- Empty columm -->
+  <div class="col-md-2">
+  </div>
+
+  <div class="col-md-7">
+    <div id="line-chart"></div>
+  </div>   
+
+  <div class="col-md-3">
+    <h4><u>Time Graph</u></h4>
+    <p><i>How to use:</i>
+      Use the Key Dates to select a time period where Netflix was expecting to have big growth based on multiple factors.
+      </p>
+    <p> </p>
+    <p><i>Explanation</i>:
+      The time graph shows the selected date and then the following 6 month stock trend to see the impact the date had moving forward with Netlfix.  
+      </p>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- </body>
+  <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="{{ url_for('static', filename='js/bubbleapp.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/timegraph.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/summary_card.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/county_geojson.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script> -->
+
+</html>
