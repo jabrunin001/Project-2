@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import json
@@ -20,6 +19,10 @@ app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///netflix_db.sqlite"
 db = SQLAlchemy(app)
+SQLALCHEMY_BINDS = {
+        ‘db2’: 'sqlite://netflix_titles_db.sqlite’,
+        'db3': 'sqlite://key_dates_db.sqlite’
+}
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -27,9 +30,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-High_Stock_data = Base.classes.High
-Low_Stock_data = Base.classes.Low
-Stock_dates = Base.classes.Date
+
 
 
 @app.route("/")
