@@ -53,7 +53,7 @@ def linechart(year, x , y):
 def county2(country):
     """Return a list of sample names."""
     # Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select country from netflix_titles where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
+    results = pd.read_sql(f"select Country Produced from ProductionCompany where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
     # print(results)
     # Return a list of the column names (sample names)
     json1 = results.to_json(orient='records')
