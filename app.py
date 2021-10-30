@@ -27,9 +27,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-High_Stock_data = Base.classes.High
-Low_Stock_data = Base.classes.Low
-Stock_dates = Base.classes.Date
+Netflix_data = Base.classes.netflix
 
 
 @app.route("/")
@@ -44,7 +42,7 @@ def linechart(year, x , y):
     """Returns the data needed for the linechart."""
     print('This is the data for the stock information')
     # Use Pandas to perform the sql query
-    results = pd.read_sql(f"SELECT column1, column2, column3, {x}, {y} FROM netflix WHERE year = '{year}' AND {x} IS NOT NULL and {y} IS NOT NULL", db.session.bind)
+    results = pd.read_sql(f"SELECT Close, {x}, {y} FROM netflix WHERE date = '{date}' AND {x} IS NOT NULL and {y} IS NOT NULL", db.session.bind)
 
     # print(results)
     # Return a list of the column names (sample names)
@@ -53,11 +51,11 @@ def linechart(year, x , y):
     return jsonify(jsonresults)
 
 
-@app.route("/<county>")
-def county2(county):
+@app.route("/<country>")
+def county2(country):
     """Return a list of sample names."""
     # Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select country from netflix where year = '{year} and country = '{county}'", db.session.bind)
+    results = pd.read_sql(f"select country from netflix_titles where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
     # print(results)
     # Return a list of the column names (sample names)
     json1 = results.to_json(orient='records')
@@ -70,7 +68,7 @@ def county2(county):
 def county3(county):
     """Return a list of sample names."""
     # Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select * from netflix where country = '{county}' order by date", db.session.bind)
+    results = pd.read_sql(f"select * from netflix_titles where country = '{County_Produced}' order by date", db.session.bind)
     # print(results)
     # Return a list of the column names (sample names)
     json1 = results.to_json(orient='records')
@@ -89,7 +87,7 @@ def county3(county):
 def map_route(variable, year):
     """Return a list of sample names."""
     # Use Pandas to perform the sql query
-    results = pd.read_sql(f"select year, county from netflix where year = {year}", db.session.bind)
+    results = pd.read_sql(f"select year, county from netflix where year = {release_year}", db.session.bind)
     if results[f'{variable}'].dtypes == 'int64':
         results[f'{variable}'] = results[f'{variable}'].astype(float)
     results = results.set_index("country")
