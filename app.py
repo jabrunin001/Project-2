@@ -18,11 +18,7 @@ app = Flask(__name__)
 #################################################
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///netflix_db.sqlite"
-db = SQLAlchemy(app)
-SQLALCHEMY_BINDS = {
-        ‘db2’: 'sqlite://netflix_titles_db.sqlite’,
-        'db3': 'sqlite://key_dates_db.sqlite’
-}
+app.config['SQLALCHEMY_BINDS'] = {'two' : 'sqlite:///year_country_produced_db.sqlite'}
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -30,11 +26,6 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-<<<<<<< HEAD
-Netflix_data = Base.classes.netflix
-=======
-
->>>>>>> 9542780981c54f59d38bfb8f3dd01ee4a94225f9
 
 
 @app.route("/")
@@ -71,11 +62,11 @@ def county2(country):
 
 
     
-@app.route("/timeseries/<county>")
+@app.route("/timeseries/")
 def county3(county):
     """Return a list of sample names."""
     # Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select * from netflix_titles where country = '{County_Produced}' order by date", db.session.bind)
+    results = pd.read_sql(f"select Close from netflix_titles order by date", db.session.bind)
     # print(results)
     # Return a list of the column names (sample names)
     json1 = results.to_json(orient='records')
@@ -94,7 +85,7 @@ def county3(county):
 def map_route(variable, year):
     """Return a list of sample names."""
     # Use Pandas to perform the sql query
-    results = pd.read_sql(f"select year, county from netflix where year = {release_year}", db.session.bind)
+    results = pd.read_sql(f"select release_year, country from netflix where year = {year}", db.session.bind)
     if results[f'{variable}'].dtypes == 'int64':
         results[f'{variable}'] = results[f'{variable}'].astype(float)
     results = results.set_index("country")
