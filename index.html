@@ -23,7 +23,6 @@
   </div>
 </nav>
 <div id="mySidebar" class="sidebar">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <!-- select a year -->
   <div class="panel-heading"><strong>Select Year</strong>
     <div class="panel-sub-heading">Select Year</div>
@@ -63,7 +62,7 @@
       <option value="">Date #3</option>
       <option value="">Date #4</option>
       <option value="">Date #5</option>
-      <option value="" selected>Date #6</option>
+      <option value="">Date #6</option>
       <option value="">Date #7</option>  
       <option value="">Date #8</option>
       <option value="">Date #9</option>
@@ -71,24 +70,11 @@
     </select>
   </div>
   <br>
-  <!-- select a second variable -->
-  <div class="panel-heading"><strong>Region</strong>
-  </div>
-  <div class="panel-body">
-    <select id="xAxisSelection" onchange="newXBubble(this.value); NewVar2(this.value);">
-      <option value="">All Regions</option>
-      <option value="">USA & Canada</option>
-      <option value="">EMEA (Europe, Middle East, Africa)</option>
-      <option value="">Latin America</option>
-      <option value="">Asia-Pacific</option>
-    </select>
-  </div>
-  <br>
-    <!-- select a third variable -->
+    <!-- select a rating variable -->
   <div class="panel-heading"><strong>Rating</strong>
   </div>
   <div class="panel-body">
-    <select id="zAxisSelection" onchange="NewVar3(this.value);">
+    <select id="zAxisSelection" onchange="NewVar2(this.value);">
       <option value="">G</option>
       <option value="">PG</option>
       <option value="">PG-13</option>

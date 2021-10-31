@@ -26,7 +26,8 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-
+Stock_data = Base.classes.netflix
+Production_data = Base.classes.ProductionCompany
 
 @app.route("/")
 def index():
