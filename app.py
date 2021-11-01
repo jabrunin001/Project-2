@@ -53,12 +53,12 @@ def barchart(y , x) :
 def county2(country):
     """Return a list of sample names."""
      #Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select country from MainNetflix where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
+    #results = pd.read_sql(f"select country from MainNetflix where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
     #print(results)
     #Return a list of the column names (sample names)
-    json1 = results.to_json(orient='records')
-    jsonfiles = json.loads(json1)
-    return jsonify(jsonfiles)
+    #json1 = results.to_json(orient='records')
+    #jsonfiles = json.loads(json1)
+    #return jsonify(jsonfiles)
 
 
     
@@ -77,9 +77,9 @@ def county2(country):
 
     # print(results)
     # Return a list of the column names (sample names)
-    json1 = results.to_json(orient='records')
-    jsonfiles = json.loads(json1)
-    return jsonify(jsonfiles)
+    #json1 = results.to_json(orient='records')
+    #jsonfiles = json.loads(json1)
+    #return jsonify(jsonfiles)
 
 #@app.route("/map/<variable>/<year>")
 #def map_route(variable, year):
