@@ -49,17 +49,26 @@ def barchart(year, x , y):
     jsonresults = json.loads(results)
     return jsonify(jsonresults)
 
+  d3.json(json.loads(results)).then((data) => {
+    var samples= data.ratings;
+    var resultsarray= samples.filter(sampleobject => 
+        sampleobject.id == sample);
+    var result= resultsarray[0]
+  
+    var ids = result.otu_ids;
+    var labels = result.otu_labels;
+    var values = result.sample_values;
 
-#@app.route("/<country>")
-#def county2(country):
-    #"""Return a list of sample names."""
-    # Use Pandas to perform the sql querylscc
-    #results = pd.read_sql(f"select Country Produced from ProductionCompany where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
-    # print(results)
-    # Return a list of the column names (sample names)
-    #json1 = results.to_json(orient='records')
-    #jsonfiles = json.loads(json1)
-    #return jsonify(jsonfiles)
+@app.route("/<country>")
+def county2(country):
+    """Return a list of sample names."""
+     #Use Pandas to perform the sql querylscc
+    results = pd.read_sql(f"select country from ProductionCompany where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
+    #print(results)
+    #Return a list of the column names (sample names)
+    json1 = results.to_json(orient='records')
+    jsonfiles = json.loads(json1)
+    return jsonify(jsonfiles)
 
 
     
