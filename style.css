@@ -204,3 +204,18 @@ html {
     top: 0;
     z-index: 1000
 }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv {
+  width: 100%;
+  height: 500px;
+  max-width: 100%;
+}
+
+#controls {
+  overflow: hidden;
+  padding-bottom: 3px;
+}
