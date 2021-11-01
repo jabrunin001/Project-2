@@ -40,7 +40,7 @@ window.onload = function () {
         }
       }
     });
-    $.getJSON("json.loads(results)", function(data) {
+    $.getJSON("../netflix_data.json", function(data) {
       for(var i = 0; i < data.length; i++){
         dataPoints.push({x: new Date(data[i].date), y: Number(data[i].sale)});
       }

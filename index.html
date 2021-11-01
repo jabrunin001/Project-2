@@ -18,13 +18,27 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand"><font color="white"><b>Netflix: A Story of the Revolutionary Company</b></font></a>
-      <a class="navbar-sub"><font color="rgba(245, 245, 245, 0.849)">The Netlfix Rise to power and the use or International Markets</font></a>
+      <a class="navbar-sub"><font color="rgba(245, 245, 245, 0.849)">Netflix's rise to power and what the future holds</font></a>
     </div>
   </div>
 </nav>
-<div id="mySidebar" class="sidebar">
+<head>
+</head>
+
+<body>
+   <div style = "position:relative; left:80px; top:2px; ">
+    <h4><u>Brief History</u></h4>
+    Netflix was founded in 1997 in Scotts Valley, California. It started as innovate approach to DVD distribution through mail, competing with entertainment giants such as Blockbuster. They are now the largest streaming service with over 200 million subscribers in 190 countries around the world. Their collaboration and growth with international content may be the reason why the giant stays on the rise.
+    This app had the intention of looking at the history of Netlflix (and hopefully the future) to see how it has changed over the years. Looking at key dates in it's history and how they were catalysts for the growth of the company. How the expansion into foreign countries and new original content has spured a new creative enterprise. Finally how the growth of adult centered content and the lack of cable monitoring has allowed more age specific content for everyone 
+   </div>
+</body>
+      <h4><u>Brief History</u></h4>
+        <p>Netflix was founded in 1997 in Scotts Valley, California. It started as innovate approach to DVD distribution through mail, competing with entertainment giants such as Blockbuster. They are now the largest streaming service with over 200 million subscribers in 190 countries around the world. Their collaboration and growth with international content may be the reason why the giant stays on the rise.
+        This app had the intention of looking at the history of Netlflix (and hopefully the future) to see how it has changed over the years. Looking at key dates in it's history and how they were catalysts for the growth of the company. How the expansion into foreign countries and new original content has spured a new creative enterprise. Finally how the growth of adult centered content and the lack of cable monitoring has allowed more age specific content for everyone to enjoy.
+        Project Number 2, credits and high fives to Tim Brackett, Daniel Chia, and Jim Bruning </p>
+      </div>
   <!-- select a year -->
-  <div class="panel-heading"><strong>Select Year</strong>
+  <!--<div class="panel-heading"><strong>Select Year</strong>
     <div class="panel-sub-heading">Select Year</div>
   </div>
   <div class="panel-body">
@@ -51,17 +65,8 @@
       <option value="2002">2002</option>
     </select>
   </div>
-  <br>
-  <head>
-    <!-- Load plotly.js into the DOM -->
-    <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-  </head>
-  
-  <body>
-    <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
-  </body>
-  <div class="panel-heading"><strong>Rating</strong>
+  <br> -->
+ <!--  <div class="panel-heading"><strong>Rating</strong>
   </div>
   <div class="panel-body">
     <select id="zAxisSelection" onchange="NewVar2(this.value);">
@@ -77,7 +82,9 @@
       <option value="">NR</option>
     </select>
   </div>
-</div>
+</div> -->
+<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+<div style="margin-top:16px;color:dimgrey;font-size:9px;font-family: Verdana, Arial, Helvetica, sans-serif;text-decoration:none;">Source: <a href="https://canvasjs.com/javascript-stockcharts/stockchart-date-time-axis/" target="_blank" title="JavaScript Stock Charts with Date-Time Axis ">https://canvasjs.com/javascript-stockcharts/stockchart-date-time-axis/</a></div>
   <body>
   <div id="chartContainer" style="height: 370px; width: 100%;"></div>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -85,31 +92,40 @@
     <br>
     <br>
     <div id="main">
-      <button class="openbtn" onclick="openNav()">&#9776; Filters</button>
+      <!-- <button class="openbtn" onclick="openNav()">&#9776; Filters</button> -->
     <br>
     <br>
     <br>
     <br>
     <br>
-  <div class="main">
-    <div class="row-fluid justify-content-center">
-      <div class="col-lg-4">
-        <h4><u>Brief History</u></h4>
-        <p>Netflix was founded in 1997 in Scotts Valley, California. It started as innovate approach to DVD distribution through mail, competing with entertainment giants such as Blockbuster. They are now the largest streaming service with over 200 million subscribers in 190 countries around the world. Their collaboration and growth with international content may be the reason why the giant stays on the rise. </p>  
-        </div>
+    <br>
+    <h4><u>Tree Diagram and Growth Chart</u></h4>
+    <p><i>How to use:</i>
+      You can hover over each individual item in the tree diagram and it will give you a count of the amount of movies/shows were housed by Netflix within the range of the Release Year by country. You can use the sliders on the release year to figure out specific year ranges you are interested in. You can also filter rating to see which country produced the most content for specific ratings.
+      </p>
+    <p><i>Explanation</i>:
+      Use these filters to get a sense of how content is shifting from year to year and by country. See how Netflix has shifted gears over the years since their start in the early 2000s.
+      </p>
+      <br>
+      <br>
+   </div>
   <div class='tableauPlaceholder' id='viz1635758522894' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Pr&#47;Project2_16357584815460&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Project2_16357584815460&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Pr&#47;Project2_16357584815460&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1635758522894');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+  <div class="col-md-3">
 
-        <div class="col-lg-4">
-          <div class="spacing">
-          <br>
-          <br>
-        </div>
-          <p>This app had the intention of looking at the history of Netlflix (and hopefully the future) to see how it has changed over the years. Looking at key dates in it's history and how they were catalysts for the growth of the company. How the expansion into foreign countries and new original content has spured a new creative enterprise. Finally how the growth of adult centered content and the lack of cable monitoring has allowed more age specific content for everyone to enjoy.</p>
-          <p>Project Number 2, credits and high fives to Tim Brackett, Daniel Chia, and Jim Bruning </p>
-        </div>
+    <head>
+      <!-- Load plotly.js into the DOM -->
+      <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    </head>
+    
+    <body>
+      <div id="myDiv">
+        <!-- Plotly chart will be drawn inside this DIV -->
+      </div>
+    </body>
     <div class="row-fluid justify-content-center">
       <div class="col-lg-12">
-    <h4><b>Click on any country on the map to get started, or start with USA by default.</b></h4>  
+    <!-- <h4><b>Click on any country on the map to get started, or start with USA by default.</b></h4>  -->
       </div>
     </div>
     <head>
@@ -281,24 +297,23 @@
   <div class="col-md-7">
     <div id="bubble"></div>
   </div>
-  <div class="col-md-3">
-    <br>
-    <h4><u>Bubble Plot</u></h4>
-    <p><i>How to use:</i>
-      Use the Country Filters, type in a country name, hit Enter. Click on the <b>Show World</b> button to reset to default view.
-      </p>
-    <p> </p>
-    <p> </p>
-    <p><i>Explanation</i>:
-      The bubble plot is used to show the amount of TV and Movies are created in each specific country. You can use the year filter to see how the content has changed over the years.
-      </p>
-      <br>
-      <br>
-   </div>
+
   </div>
 </div>
 <br>
 <br>
+<head>
+  <!-- Load plotly.js into the DOM -->
+  <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="myDiv">
+    <!-- Plotly chart will be drawn inside this DIV -->
+  </div>
+</body>
 <div class="container-fluid">
 <div class="row-fluid">
   <!-- Empty columm -->

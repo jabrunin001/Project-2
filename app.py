@@ -17,8 +17,8 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 
-db = app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///titles_country_year.sqlite"
-app.config['SQLALCHEMY_BINDS'] = {'two' : 'sqlite:///netflix_db.sqlite'}
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///netflix_db.sqlite"
+db = SQLAlchemy(app)
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -26,22 +26,22 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-netflix_data = Base.classes.MainNetflix
+stock_data = Base.classes.netflix
 
 @app.route("/")
 def index():
     """Return the homepage."""
     return render_template("index.html")
 
-# runs the flask app to get the data for the barchart 
+# runs the flask app to get the data for the stock chart 
 
 #
-@app.route("/barchart") # doing this for the top 20 countries, for every year
-def barchart(year, x , y): 
+@app.route("/stockchart") # doing this for the top 20 countries, for every year
+def barchart(y , x) : 
     """Returns the data needed for the linechart."""
-    print('This is the data for the ratings information')
+    print('This is the data for the stock information')
     # Use Pandas to perform the sql query
-    results = pd.read_sql(f"SELECT rating, country, country_added from MainNetflix where release_year = {year}", db.session.bind)
+    results = pd.read_sql(f"SELECT Close, date from netflix", db.session.bind)
 
     # print(results)
     # Return a list of the column names (sample names)
@@ -49,21 +49,11 @@ def barchart(year, x , y):
     jsonresults = json.loads(results)
     return jsonify(jsonresults)
 
-  d3.json(json.loads(results)).then((data) => {
-    var samples= data.ratings;
-    var resultsarray= samples.filter(sampleobject => 
-        sampleobject.id == sample);
-    var result= resultsarray[0]
-  
-    var ids = result.otu_ids;
-    var labels = result.otu_labels;
-    var values = result.sample_values;
-
 @app.route("/<country>")
 def county2(country):
     """Return a list of sample names."""
      #Use Pandas to perform the sql querylscc
-    results = pd.read_sql(f"select country from ProductionCompany where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
+    results = pd.read_sql(f"select country from MainNetflix where year = '{release_year} and country = '{County_Produced}'", db.session.bind)
     #print(results)
     #Return a list of the column names (sample names)
     json1 = results.to_json(orient='records')
